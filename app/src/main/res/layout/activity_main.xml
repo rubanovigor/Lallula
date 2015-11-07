@@ -4,12 +4,12 @@
     android:padding="16dp" android:background="#0099cc"
     >
 
+    <!--android:textSize="10sp"-->
     <TextView
-        android:id="@+id/info"
+        android:id="@+id/tv_facebookInfo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:textSize="18sp"
         android:text="fb user info"
         android:layout_below="@+id/login_button"
         />
@@ -19,22 +19,45 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
+        android:layout_margin="5dp"
         />
 
-    <TextView
-        android:id="@+id/tv_info"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="app statistics"
-        android:layout_below="@+id/stats_btn"
+    <com.facebook.login.widget.ProfilePictureView
+        android:id="@+id/profile_picture"
+        android:layout_gravity="center"
+        android:layout_width="50sp"
+        android:layout_height="50sp"
+        android:layout_alignParentRight="true"
+        android:layout_margin="5dp"
+        android:layout_alignParentTop="true"
         />
 
     <Button
+        android:id="@+id/btn_AppStat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:id="@+id/stats_btn"
-        android:text="Get Stats"
+        android:text="Show App's Statistics"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/tv_facebookInfo"
+        android:layout_margin="5dp"
+        />
+
+    <Button
+        android:id="@+id/btn_facebookShare"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Share to Facebook"
+        android:layout_toRightOf="@+id/btn_AppStat"
+        android:layout_below="@+id/tv_facebookInfo"
+        android:layout_margin="5dp"
+        />
+
+    <TextView
+        android:id="@+id/tv_AppStat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="about app statistics"
+        android:layout_below="@+id/btn_AppStat"
         />
 
 </RelativeLayout>
