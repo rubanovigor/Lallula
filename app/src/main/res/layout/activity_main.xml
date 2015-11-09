@@ -4,7 +4,9 @@
     android:padding="16dp" android:background="#0099cc"
     >
 
-    <!--android:textSize="10sp"-->
+    <!--android:textSize="10sp"
+    android:background="@drawable/yourpicturename" -->
+
     <TextView
         android:id="@+id/tv_facebookInfo"
         android:layout_width="wrap_content"

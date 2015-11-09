@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,10 +15,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
+import com.facebook.FacebookDialog;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
@@ -36,6 +39,7 @@ import com.facebook.share.widget.ShareDialog;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
@@ -50,12 +54,8 @@ public class MainActivity extends AppCompatActivity {
     private LoginButton loginButton;
     ProfilePictureView profilePicture;
     private CallbackManager callbackManager;
-//    private LoginManager loginManager;
     Button btn_AppStat, btn_facebookShare;
     ShareDialog shareDialog;
-
-//    private static final List<String> PERMISSIONS = Arrays.asList("publish_actions");
-//    private String tempM="";
 
 
     @Override
@@ -193,8 +193,8 @@ public class MainActivity extends AppCompatActivity {
         btn_facebookShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ShareLinkContent content = new ShareLinkContent.Builder().build();
-                shareDialog.show(content);
+                sharePhotoToFacebook();
+//                shareLinkToFacebook();
 
             }
         });
@@ -204,20 +204,31 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void sharePhotoToFacebook(){
-        Bitmap image = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
+        Bitmap image = BitmapFactory.decodeResource(getResources(), R.drawable.mine);
+//        BitmapFactory.decodeResource("/sdcard/logo.jpg");
+
         SharePhoto photo = new SharePhoto.Builder()
                 .setBitmap(image)
-                .setCaption("Give me my code or I will ... you know, do that thing you don't like!")
                 .build();
-
         SharePhotoContent content = new SharePhotoContent.Builder()
                 .addPhoto(photo)
                 .build();
-
-        ShareApi.share(content, null);
-
-        tv_AppStat.setText("sharing");
+        shareDialog.show(content);
     }
+
+    private void shareLinkToFacebook(){
+        ShareLinkContent content = new ShareLinkContent.Builder()
+                .setContentUrl(Uri.parse("https://youtu.be/8XWXJDgbeP0"))
+                .setContentTitle("The Singularity Is Near Movie Trailer")
+                .setContentDescription("The Singularity is Near, A True Story about the Future, based on Ray Kurzweil’s New York Times bestseller")
+                .setImageUrl(Uri.parse("https://qph.is.quoracdn.net/main-thumb-t-1310-200-ykjopcfaccptqyydeyfbovmprpavvzoa.jpeg"))
+                .build();
+
+        shareDialog.show(content);
+    }
+
+
+
 
     public void getFbKeyHash(String packageName) {
 
@@ -229,7 +240,7 @@ public class MainActivity extends AppCompatActivity {
                 MessageDigest md = MessageDigest.getInstance("SHA");
                 md.update(signature.toByteArray());
                 Log.d("YourKeyHash :", Base64.encodeToString(md.digest(), Base64.DEFAULT));
-                System.out.println("YourKeyHash: "+ Base64.encodeToString(md.digest(), Base64.DEFAULT));
+//                System.out.println("YourKeyHash: "+ Base64.encodeToString(md.digest(), Base64.DEFAULT));
             }
         } catch (PackageManager.NameNotFoundException e) {
 
