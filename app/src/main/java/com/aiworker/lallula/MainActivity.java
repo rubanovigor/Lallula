@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
 
         /** You need this method to be used only once to configure
         your key hash in your App Console at developers.facebook.com/apps */
-        getFbKeyHash("com.aiworker.lallula");
+//        getFbKeyHash("com.aiworker.lallula");
 
         /** declare layout and corresponding elements */
         setContentView(R.layout.activity_main);
