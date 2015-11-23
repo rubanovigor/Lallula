@@ -8,29 +8,33 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.Settings;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
-import com.facebook.FacebookDialog;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
-import com.facebook.Profile;
-import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.facebook.login.widget.ProfilePictureView;
-import com.facebook.share.ShareApi;
 import com.facebook.share.model.ShareLinkContent;
 import com.facebook.share.model.SharePhoto;
 import com.facebook.share.model.SharePhotoContent;
@@ -39,23 +43,24 @@ import com.facebook.share.widget.ShareDialog;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
-import java.util.List;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener {
+
     public static TextView tv_facebookInfo, tv_AppStat;
     private LoginButton loginButton;
     ProfilePictureView profilePicture;
     private CallbackManager callbackManager;
     Button btn_AppStat, btn_facebookShare;
     ShareDialog shareDialog;
+    ImageView iv_profile_picture;
 
 
     @Override
@@ -71,6 +76,28 @@ public class MainActivity extends AppCompatActivity {
 
         /** declare layout and corresponding elements */
         setContentView(R.layout.activity_main);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+                sharePhotoToFacebook();
+            }
+        });
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
 
         tv_facebookInfo = (TextView)findViewById(R.id.tv_facebookInfo);
         tv_AppStat = (TextView)findViewById(R.id.tv_AppStat);
@@ -78,6 +105,7 @@ public class MainActivity extends AppCompatActivity {
         btn_facebookShare = (Button) findViewById(R.id.btn_facebookShare);
         loginButton = (LoginButton)findViewById(R.id.login_button);
         profilePicture = (ProfilePictureView)findViewById(R.id.profile_picture);
+        iv_profile_picture = (ImageView)findViewById(R.id.imageView);
 
         shareDialog = new ShareDialog(this);
 
@@ -124,6 +152,7 @@ public class MainActivity extends AppCompatActivity {
 //                                    tv_facebookInfo.setText(birthday);
                                     tv_facebookInfo.setText("ID: " + id + " | " + email + "\n" + name + ", " + " | " + gender + " | " + birthday);
                                     profilePicture.setProfileId(object.getString("id"));
+                                   // iv_profile_picture.setImageBitmap(profilePicture.getDrawingCache());
                                 }
                                 catch (JSONException e)
                                 {
@@ -171,6 +200,7 @@ public class MainActivity extends AppCompatActivity {
 //                                tv_facebookInfo.setText(birthday);
                                 tv_facebookInfo.setText("ID: " + id + " | " + email + "\n" + name + ", " + " | " + gender + " | " + birthday);
                                 profilePicture.setProfileId(object.getString("id"));
+                                //iv_profile_picture.setImageBitmap(profilePicture.getDrawingCache());
                             }
                             catch (JSONException e)
                             {
@@ -229,6 +259,15 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
 
     public void getFbKeyHash(String packageName) {
 
@@ -263,4 +302,28 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+
+        if (id == R.id.nav_camara) {
+            // Handle the camera action
+        } else if (id == R.id.nav_gallery) {
+
+        } else if (id == R.id.nav_slideshow) {
+
+        } else if (id == R.id.nav_manage) {
+
+        } else if (id == R.id.nav_share) {
+
+        } else if (id == R.id.nav_send) {
+
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
 }
